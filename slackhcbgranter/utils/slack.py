@@ -40,5 +40,4 @@ async def merchant_cats(payload: dict, ack: AsyncAck):
 
 @app.view("send_grant")
 async def send_grant_view(client: AsyncWebClient, ack: AsyncAck, body: dict):
-    await ack()
     await send_grant_view_callback(client, ack, body)

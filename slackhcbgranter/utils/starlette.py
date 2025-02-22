@@ -6,7 +6,7 @@ from starlette.routing import Route
 
 from slackhcbgranter.__main__ import main
 from slackhcbgranter.utils.env import env
-from slackhcbgranter.utils.oauth import callback as hcb_callback
+from slackhcbgranter.utils.hcb.oauth import callback as hcb_callback
 from slackhcbgranter.utils.slack import app as slack_app
 
 req_handler = AsyncSlackRequestHandler(slack_app)

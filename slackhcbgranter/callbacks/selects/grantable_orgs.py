@@ -1,7 +1,7 @@
 from thefuzz import fuzz
 from thefuzz import process
 
-from slackhcbgranter.utils.hcb import get_eligible_orgs
+from slackhcbgranter.utils.hcb.organisations import get_eligible_orgs
 
 
 async def get_grantable_orgs(payload: dict) -> list[dict[str, dict[str, str] | str]]:

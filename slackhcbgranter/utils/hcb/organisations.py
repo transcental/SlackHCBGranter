@@ -1,20 +1,9 @@
 import asyncio
 
-from aiohttp import ClientSession
-
-from slackhcbgranter.utils.env import env
+from slackhcbgranter.utils.hcb.requests import get
+from slackhcbgranter.utils.hcb.user import get_user_data
 from slackhcbgranter.utils.types.hcb import Organisation
 from slackhcbgranter.utils.types.hcb import OrgUser
-from slackhcbgranter.utils.types.hcb import User
-
-
-async def get(endpoint: str) -> dict:
-    async with ClientSession() as session:
-        async with session.get(
-            f"{env.hcb_base_url}/api/v4/{endpoint}",
-            headers={"Authorization": f"Bearer {env.hcb_token}"},
-        ) as response:
-            return await response.json()
 
 
 async def get_orgs() -> list[Organisation]:
@@ -61,14 +50,3 @@ async def get_eligible_orgs() -> list[Organisation]:
         )
     ]
     return eligible_orgs
-
-
-async def get_user_data() -> User:
-    response = await get("user")
-    return User(
-        id=response["id"],
-        name=response["name"],
-        email=response["email"],
-        admin=response["admin"],
-        avatar=response["avatar"],
-    )

@@ -1,7 +1,7 @@
 from slack_bolt.context.ack.async_ack import AsyncAck
 
 from slackhcbgranter.utils.env import env
-from slackhcbgranter.utils.oauth import authorise
+from slackhcbgranter.utils.hcb.oauth import authorise
 
 
 async def check_auth(ack: AsyncAck, user_id: str) -> bool:
