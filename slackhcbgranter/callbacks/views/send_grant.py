@@ -5,6 +5,7 @@ from slack_bolt.context.ack.async_ack import AsyncAck
 from slack_sdk.web.async_client import AsyncWebClient
 
 from slackhcbgranter.utils.hcb.grants import create_grant
+from slackhcbgranter.utils.hcb.organisations import get_org
 from slackhcbgranter.views.send_grant_modal import get_modal
 
 
@@ -94,9 +95,24 @@ async def send_grant_callback(client: AsyncWebClient, ack: AsyncAck, body: dict)
             .get("merchant_cats", {})
             .get("selected_options", []),
         }
-        message = f"*Error creating grant*\n`{res.get('error')}` - {res.get('message')}"
+        message = f"*Error creating grant*\n`{res.get('error')}`"
+        if res.get("message"):
+            message += f"- {res.get('message')}"
         view = get_modal(message, initial_values)
         await ack(response_action="update", view=view)
-    else:
-        logging.info(res)
-        await ack("Grant created successfully")
+    elif res.get("status") == "active":
+        await ack()
+        org = await get_org(org)
+        restrictions = ""
+        if merchant_id:
+            restrictions += f"\nAllowed Merchants: {merchant_id}"
+        if merchant_cats:
+            restrictions += f"\nAllowed Merchant Categories: {','.join(merchant_cats)}"
+        if merchant_regex:
+            restrictions += f"\nAllowed Merchant Regex: {merchant_regex}"
+        if purpose:
+            restrictions += f"\nPurpose: {purpose}"
+        await client.chat_postMessage(
+            channel=body["user"]["id"],
+            text=f"Issued ${balance:.2f} grant for {email} from {org.name}.\n{restrictions}",
+        )

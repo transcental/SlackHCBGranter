@@ -1,4 +1,4 @@
-from slackhcbgranter.utils.hcb.requests import get
+from slackhcbgranter.utils.hcb.requests import post
 
 
 async def create_grant(
@@ -10,7 +10,15 @@ async def create_grant(
     merchant_regex: str,
     purpose: str,
 ):
-    res = await get(
-        f"card_grants/create?event_id={org}&amount_cents={int(amount * 100)}&email={email}&merchant_lock={merchant_id}&category_lock={merchant_cats}&keyword_lock={merchant_regex}&purpose={purpose}"
+    res = await post(
+        f"organizations/{org}/card_grants",
+        data={
+            "amount_cents": int(amount * 100),
+            "email": email,
+            "merchant_lock": merchant_id,
+            "category_lock": merchant_cats,
+            "keyword_lock": merchant_regex,
+            "purpose": purpose,
+        },
     )
     return res
