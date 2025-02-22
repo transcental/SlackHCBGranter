@@ -16,7 +16,7 @@ async def create_grant(
             "amount_cents": int(amount * 100),
             "email": email,
             "merchant_lock": merchant_id,
-            "category_lock": merchant_cats,
+            "category_lock": ",".join(merchant_cats),
             "keyword_lock": merchant_regex,
             "purpose": purpose,
         },

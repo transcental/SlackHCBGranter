@@ -11,7 +11,6 @@ from slackhcbgranter.views.send_grant_modal import get_modal
 
 
 async def send_grant_callback(client: AsyncWebClient, ack: AsyncAck, body: dict):
-    logging.info("Callback")
     view = body["view"]
     values = view["state"]["values"]
     org = (
@@ -45,14 +44,14 @@ async def send_grant_callback(client: AsyncWebClient, ack: AsyncAck, body: dict)
                 "errors": {"balance": "Amount must be greater than $0"},
             }
         )
-    elif balance > 2147483647:
+    elif balance > 21474836.47:
         return await ack(
             {
                 "response_action": "errors",
                 "errors": {"balance": "Amount must be less than $2147483647"},
             }
         )
-    elif balance % 0.01 != 0:
+    elif round(balance, 2) != balance:
         return await ack(
             {
                 "response_action": "errors",
@@ -83,9 +82,6 @@ async def send_grant_callback(client: AsyncWebClient, ack: AsyncAck, body: dict)
 
     purpose = values.get("purpose", {}).get("purpose", {}).get("value")
 
-    logging.info(
-        f"Creating grant for {org} with balance {balance} for {email} with merchant_id {merchant_id} and merchant_cats {merchant_cats} and merchant_regex {merchant_regex} with purpose {purpose}"
-    )
     res = await create_grant(
         org, balance, email, merchant_id, merchant_cats, merchant_regex, purpose
     )

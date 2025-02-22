@@ -39,7 +39,7 @@ def get_modal(
                     "is_decimal_allowed": True,
                     "action_id": "balance",
                     "min_value": "0.1",
-                    "max_value": "2147483647",
+                    "max_value": "21474836.47",
                 },
                 "label": {"type": "plain_text", "text": "Amount (USD)", "emoji": True},
             },
