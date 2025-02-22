@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 from slackhcbgranter.utils.hcb.requests import get
 from slackhcbgranter.utils.hcb.user import get_user_data
@@ -8,12 +9,14 @@ from slackhcbgranter.utils.types.hcb import OrgUser
 
 async def get_orgs() -> list[Organisation]:
     response = await get("user/organizations")
+    response = json.loads(response.content)
     orgs = await asyncio.gather(*[get_org(org["id"]) for org in response])
     return orgs
 
 
 async def get_org(org_id: str) -> Organisation:
     response = await get(f"organizations/{org_id}")
+    response = json.loads(response.content)
     org = Organisation(
         id=response["id"],
         slug=response["slug"],

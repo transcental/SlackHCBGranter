@@ -1,3 +1,4 @@
+import json
 import logging
 import re
 
@@ -41,7 +42,21 @@ async def send_grant_callback(client: AsyncWebClient, ack: AsyncAck, body: dict)
         return await ack(
             {
                 "response_action": "errors",
-                "errors": {"balance": "Amount must be positive"},
+                "errors": {"balance": "Amount must be greater than $0"},
+            }
+        )
+    elif balance > 2147483647:
+        return await ack(
+            {
+                "response_action": "errors",
+                "errors": {"balance": "Amount must be less than $2147483647"},
+            }
+        )
+    elif balance % 0.01 != 0:
+        return await ack(
+            {
+                "response_action": "errors",
+                "errors": {"balance": "Amount must be a multiple of $0.01"},
             }
         )
 
@@ -74,8 +89,15 @@ async def send_grant_callback(client: AsyncWebClient, ack: AsyncAck, body: dict)
     res = await create_grant(
         org, balance, email, merchant_id, merchant_cats, merchant_regex, purpose
     )
-
-    if res.get("error"):
+    mimetype = res.headers.get("Content-Type", "")
+    if "application/json" not in mimetype:
+        logging.info(f"Error creating grant: {res.content}")
+        view = get_modal(
+            "*Unknown error whilst creating grant*\nSomething really went wrong here, if this continues to happen, DM <@U054VC2KM9P>."
+        )
+        return await ack(response_action="update", view=view)
+    data = json.loads(res.content)
+    if data.get("error"):
         initial_values = {
             "organisation": values.get("organisation", {})
             .get("grantable_orgs", {})
@@ -95,12 +117,12 @@ async def send_grant_callback(client: AsyncWebClient, ack: AsyncAck, body: dict)
             .get("merchant_cats", {})
             .get("selected_options", []),
         }
-        message = f"*Error creating grant*\n`{res.get('error')}`"
-        if res.get("message"):
-            message += f"- {res.get('message')}"
+        message = f"*Error creating grant*\n`{data.get('error')}`"
+        if data.get("message"):
+            message += f"- {data.get('message')}"
         view = get_modal(message, initial_values)
         await ack(response_action="update", view=view)
-    elif res.get("status") == "active":
+    elif data.get("status") == "active":
         await ack()
         org = await get_org(org)
         restrictions = ""
