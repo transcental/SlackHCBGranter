@@ -6,7 +6,7 @@ async def get_grantable_orgs(payload: dict) -> list[dict[str, dict[str, str] | s
     keyword = payload.get("value")
     if keyword:
         org_names = [org.name for org in orgs]
-        scores = process.extract(keyword, org_names, scorer=fuzz.ratio)
+        scores = process.extract(keyword, org_names, scorer=fuzz.ratio, limit=100)
         old_orgs = orgs
 
         orgs = [old_orgs[org_names.index(score[0])] for score in scores]
