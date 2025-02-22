@@ -2,10 +2,14 @@ from slack_bolt.async_app import AsyncApp
 from slack_bolt.context.ack.async_ack import AsyncAck
 from slack_sdk.web.async_client import AsyncWebClient
 
-from slackhcbgranter.callbacks.commands.send_grant import send_grant_callback as send_grant_cmd_callback
-from slackhcbgranter.callbacks.views.send_grant import send_grant_callback as send_grant_view_callback
+from slackhcbgranter.callbacks.commands.send_grant import (
+    send_grant_callback as send_grant_cmd_callback,
+)
 from slackhcbgranter.callbacks.selects.grantable_orgs import get_grantable_orgs
 from slackhcbgranter.callbacks.selects.merchant_cats import get_merchant_cats
+from slackhcbgranter.callbacks.views.send_grant import (
+    send_grant_callback as send_grant_view_callback,
+)
 from slackhcbgranter.utils.checks import check_auth
 from slackhcbgranter.utils.env import env
 
@@ -26,7 +30,7 @@ async def send_grant(client: AsyncWebClient, ack: AsyncAck, body: dict):
 async def grantable_orgs(payload: dict, ack: AsyncAck):
     orgs = await get_grantable_orgs(payload)
     await ack(options=orgs)
-    
+
 
 @app.options("merchant_cats")
 async def merchant_cats(payload: dict, ack: AsyncAck):

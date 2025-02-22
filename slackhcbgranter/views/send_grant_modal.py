@@ -41,7 +41,11 @@ def get_modal() -> dict:
                 "block_id": "regex",
                 "element": {"type": "plain_text_input"},
                 "optional": True,
-                "label": {"type": "plain_text", "text": "Merchant Name Regex Lock", "emoji": True},
+                "label": {
+                    "type": "plain_text",
+                    "text": "Merchant Name Regex Lock",
+                    "emoji": True,
+                },
             },
             {
                 "type": "input",

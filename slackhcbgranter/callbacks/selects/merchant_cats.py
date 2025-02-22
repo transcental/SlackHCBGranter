@@ -1,5 +1,8 @@
+from thefuzz import fuzz
+from thefuzz import process
+
 from slackhcbgranter.utils.constants import MERCHANT_CATEGORIES
-from thefuzz import process, fuzz
+
 
 async def get_merchant_cats(payload: dict) -> list[dict[str, dict[str, str] | str]]:
     cats = MERCHANT_CATEGORIES

@@ -1,5 +1,8 @@
+from thefuzz import fuzz
+from thefuzz import process
+
 from slackhcbgranter.utils.hcb import get_eligible_orgs
-from thefuzz import process, fuzz
+
 
 async def get_grantable_orgs(payload: dict) -> list[dict[str, dict[str, str] | str]]:
     orgs = await get_eligible_orgs()
@@ -12,10 +15,8 @@ async def get_grantable_orgs(payload: dict) -> list[dict[str, dict[str, str] | s
         orgs = [old_orgs[org_names.index(score[0])] for score in scores]
     return [
         {
-            "text": {
-                "type": "plain_text",
-                "text": f"{org.name} (${org.balance})"
-            },
+            "text": {"type": "plain_text", "text": f"{org.name} (${org.balance})"},
             "value": org.id,
-        } for org in orgs
+        }
+        for org in orgs
     ]
