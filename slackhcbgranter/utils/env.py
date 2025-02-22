@@ -24,7 +24,8 @@ class Environment:
         self.port = int(os.environ.get("PORT", 8000))
         self.slack_client = AsyncWebClient(token=self.slack_bot_token)
         self.hcb_state = ""
-        self.hcb_code = ""
+        self.hcb_token = ""
+        self.slack_user_ids = ["U054VC2KM9P"]
 
 
 env = Environment()

@@ -9,6 +9,7 @@ dependencies = [
     "python-dotenv>=1.0.1",
     "slack-bolt>=1.22.0",
     "starlette>=0.45.3",
+    "thefuzz>=0.22.1",
     "uvicorn>=0.34.0",
     "uvloop>=0.21.0",
 ]
