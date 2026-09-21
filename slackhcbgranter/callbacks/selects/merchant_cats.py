@@ -1,5 +1,4 @@
-from thefuzz import fuzz
-from thefuzz import process
+from thefuzz import fuzz, process
 
 from slackhcbgranter.utils.constants import MERCHANT_CATEGORIES
 
