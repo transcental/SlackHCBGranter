@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Literal
-from typing import Optional
 
 
 @dataclass
@@ -17,7 +16,7 @@ class Organisation:
     balance: float
     users: list[OrgUser]
     playground_mode: bool
-    icon: Optional[str]
+    icon: str | None
     expiresAt: str
 
 

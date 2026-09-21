@@ -1,6 +1,5 @@
 import json
 import time
-from typing import Optional
 
 from valkey.asyncio import Valkey
 
@@ -23,7 +22,7 @@ class ValkeyClient:
             return User(**json.loads(data))
         return None
 
-    async def cache_user(self, user_id: str, token: Optional[str] = None) -> User:
+    async def cache_user(self, user_id: str, token: str | None = None) -> User:
         user = await self.get_user(user_id)
         if not user:
             user_data = await get_user_data()
