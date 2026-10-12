@@ -1,5 +1,4 @@
-from thefuzz import fuzz
-from thefuzz import process
+from thefuzz import fuzz, process
 
 from slackhcbgranter.utils.hcb.organisations import get_eligible_orgs
 
