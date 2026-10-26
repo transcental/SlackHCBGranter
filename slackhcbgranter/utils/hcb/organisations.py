@@ -3,8 +3,7 @@ import json
 
 from slackhcbgranter.utils.hcb.requests import get
 from slackhcbgranter.utils.hcb.user import get_user_data
-from slackhcbgranter.utils.types.hcb import Organisation
-from slackhcbgranter.utils.types.hcb import OrgUser
+from slackhcbgranter.utils.types.hcb import Organisation, OrgUser
 
 
 async def get_orgs() -> list[Organisation]:
