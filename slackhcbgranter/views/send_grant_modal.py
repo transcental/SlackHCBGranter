@@ -1,9 +1,4 @@
-from typing import Optional
-
-
-def get_modal(
-    message: Optional[str] = None, inital_values: Optional[dict] = None
-) -> dict:
+def get_modal(message: str | None = None, inital_values: dict | None = None) -> dict:
     view = {
         "type": "modal",
         "title": {"type": "plain_text", "text": "Send Grant", "emoji": True},
