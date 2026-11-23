@@ -24,8 +24,9 @@ async def callback(req: Request):
     if state != env.hcb_state:
         return JSONResponse({"error": "Invalid state"})
 
-    async with ClientSession() as session:
-        async with session.post(
+    async with (
+        ClientSession() as session,
+        session.post(
             f"{env.hcb_base_url}/api/v4/oauth/token",
             data={
                 "client_id": env.hcb_client_id,
@@ -34,7 +35,8 @@ async def callback(req: Request):
                 "grant_type": "authorization_code",
                 "redirect_uri": env.hcb_redirect_uri,
             },
-        ) as response:
-            json = await response.json()
-            env.hcb_token = json["access_token"]
+        ) as response,
+    ):
+        json = await response.json()
+        env.hcb_token = json["access_token"]
     return JSONResponse({"message": "Authorised"})

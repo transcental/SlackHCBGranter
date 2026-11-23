@@ -9,7 +9,6 @@ from starlette.applications import Starlette
 
 from slackhcbgranter.utils.env import env
 
-
 load_dotenv()
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
